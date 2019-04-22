@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+<html class="background-gradient">
+<head class="center">
+    <div class="header">
+    <h1>Tobacco Document Clustering</h1>
+    <p class="welcome-paragraph">This search engine will allow you to choose which documents 
+    and fully customize how the clustering and analysis is done on these documents.</p>
+</head>
+<body class="center">
+    <form action="" method="GET">
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+    </form>
+    {{ documents }}
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+<html class="background-gradient">
+<head class="center">
+    <div class="header">
+    <h1>Documents Gathered</h1>
+    <p class="welcome-paragraph">These are the documents associated with your request.</p>
+</head>
+<body class="center">
+    {{ documents }}
+</body>
+</html>
