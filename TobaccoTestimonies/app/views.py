@@ -13,21 +13,21 @@ def get_documents(request):
     if request.method == 'GET':
         form = QuerySettingsForm(request.GET)
         if form.is_valid():
-            	while count <= 200:
-			print(count)
-			if count % 100 == 0:
-            			url = 'http://solr.industrydocumentslibrary.ucsf.edu/solr/ltdl3/query?q=' + request.GET['topic'] + '&start=' + str(count) + '&wt=json'
-            			result = json.loads(requests.get(url).content)
-				if count == 0:
-					numDocs = result['response']['numFound']
-			        return render(request, 'httpResponse.html', {'documents': numDocs}	
-				documents = result['response']['docs']
-				
-				for doc in documents:
-					count = count + 1
-					ids.append(str(doc['id']))
-		return render(request, 'httpResponse.html', {'documents': ids})
-			
+            while count <= 1000:
+                if count % 100 == 0:
+                    url = 'http://solr.industrydocumentslibrary.ucsf.edu/solr/ltdl3/query?q=topic: ' + request.GET['topic'] + '&start=' + str(count) + '&wt=json'
+                    result = json.loads(requests.get(url).content)
+                if count == 0:
+                    numDocs = result['response']['numFound']
+                
+                documents = result['response']['docs']
+                for doc in documents:
+                    count = count + 1
+                    ids.append(str(doc['id']))
+
+            getDocs(ids)
+            return render(request, 'httpResponse.html', {'documents': ids})
+            
 
     template_name = 'index.html'
     form = QuerySettingsForm()
