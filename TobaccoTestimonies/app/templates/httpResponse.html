@@ -10,6 +10,9 @@
     <p class="welcome-paragraph">These are the documents associated with your request.</p>
 </head>
 <body class="center">
-    {{ documents }}
+    {% for cluster in num_clusters %}
+	<a href='cluster/{{cluster}}' />
+	<p>Cluster {{cluster}} </p>
+    {% endfor %}
 </body>
 </html>

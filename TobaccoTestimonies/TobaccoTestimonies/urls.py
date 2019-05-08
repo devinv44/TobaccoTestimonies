@@ -8,6 +8,8 @@ from app.views import *
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', get_documents, name='home'),
+    url(r'^cluster/(?P<cluster_count>\d*)/$', serve_cluster,),
+
     # url(r'^TobaccoTestimonies/', include('TobaccoTestimonies.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
