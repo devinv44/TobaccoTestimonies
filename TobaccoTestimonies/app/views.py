@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 import requests
 import json
 import shutil
+import os
 
 def get_documents(request):
     ids = []
@@ -13,9 +14,9 @@ def get_documents(request):
     if request.method == 'GET':
         form = QuerySettingsForm(request.GET)
         if form.is_valid():
-            while count <= 1000:
+            while count <= numDocs:
                 if count % 100 == 0:
-                    url = 'http://solr.industrydocumentslibrary.ucsf.edu/solr/ltdl3/query?q=topic: ' + request.GET['topic'] + '&start=' + str(count) + '&wt=json'
+                    url = 'http://solr.industrydocumentslibrary.ucsf.edu/solr/ltdl3/query?q=topic:' + request.GET['topic'] + '&start=' + str(count) + '&wt=json'
                     result = json.loads(requests.get(url).content)
                 if count == 0:
                     numDocs = result['response']['numFound']
@@ -26,7 +27,7 @@ def get_documents(request):
                     ids.append(str(doc['id']))
 
             getDocs(ids)
-            return render(request, 'httpResponse.html', {'documents': ids})
+            return render(request, 'httpResponse.html', {'documents': len(ids)})
             
 
     template_name = 'index.html'
@@ -36,7 +37,9 @@ def get_documents(request):
 
 def getDocs(docIdList):
 
-    pathLoc = 'home/user/dump'
+    dirpath = os.getcwd()
+    print(dirpath)
+    pathLoc = '/home/user1/dump'
     shutil.rmtree(pathLoc)
 
     try:
@@ -55,9 +58,13 @@ def getDocs(docIdList):
 
         path = '/home/user1/root/' + id1 + '/' + id2 + '/' + id3 + '/' + id4 + '/' + docId
         print(path)
-
-        shutil.copyfile(path + "/" + docId + ".ocr", pathLoc + "/" + docId + ".ocr")
+	exists = os.path.isfile(path + "/" + docId + ".ocr")
+	if exists:
+        	shutil.copyfile(path + "/" + docId + ".ocr", pathLoc + "/" + docId + ".ocr")
+	else:
+		print(path + " not found")
 
         #docFile = open(path + "/" + docId + ".ocr", "r")
         #docFile.close()
+
 
